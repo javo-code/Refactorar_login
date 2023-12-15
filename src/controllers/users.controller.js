@@ -6,8 +6,8 @@ export default class UserController {
     console.log(req.body);
     try {
       const user = await userService.register(req.body);
-      if (user) res.redirect("/login");
-      else res.redirect("/register-error");
+      if (user) res.redirect("/views/login");
+      else res.redirect("/views/register-error");
     } catch (error) {
       next(error);
     }
@@ -24,14 +24,12 @@ export default class UserController {
       req.session.password = password;
 
       if (user.role === 'user') {
-        res.redirect('/profile');
+        res.redirect('/views/profile');
       } else if (user.role === 'admin') {
-        res.redirect('/admin-profile');
-      } else {
-        res.redirect('/profile');
+        res.redirect('/views/admin-profile');
       }
     } else {
-      res.redirect('/register-error');
+      res.redirect('/views/register-error');
     }
   } catch (error) {
     next(error);

@@ -1,4 +1,4 @@
-import { UserModel } from "../dao/mongoDB/models/user.model.js";
+import { UserModel } from "../models/user.model.js";
 
 export default class UserServices {
   async findByEmail(email) {
