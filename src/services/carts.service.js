@@ -1,8 +1,7 @@
-import { CartModel } from "../dao/mongoDB/models/carts.model.js";
 const cartDao = new CartDaoMongoDB(); 
-import CartDaoMongoDB from "../dao/mongoDB/carts.dao.js";
+import CartDaoMongoDB from "../daos/mongoDB/carts.dao.js";
 const prodDao = new PorductsDaoMongoDB();
-import PorductsDaoMongoDB from "../dao/mongoDB/products.dao.js";
+import PorductsDaoMongoDB from "../daos/mongoDB/products.dao.js";
 import fs from "fs";
 import { __dirname } from "../utils.js";
 
