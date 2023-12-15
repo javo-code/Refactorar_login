@@ -23,11 +23,10 @@ export default class UserController {
       req.session.email = email;
       req.session.password = password;
 
-      if (user.role === 'user') {
-        res.redirect('/views/profile');
-      } else if (user.role === 'admin') {
-        res.redirect('/views/admin-profile');
-      }
+      user.role === 'admin' ?
+        res.redirect('/views/admin-profile') :
+        res.redirect('/views/profile')
+      
     } else {
       res.redirect('/views/register-error');
     }
