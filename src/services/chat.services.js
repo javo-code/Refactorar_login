@@ -1,4 +1,4 @@
-import MessageDaoMongoDB from "../dao/mongoDB/chat.dao.js";
+import MessageDaoMongoDB from "../daos/mongoDB/chat.dao.js";
 const msgDao = new MessageDaoMongoDB();
 
 export const getAll = async () => {

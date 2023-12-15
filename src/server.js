@@ -11,6 +11,7 @@ import handlebars from 'express-handlebars';
 
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
+import chatRouter from './routes/chat.router.js';
 
 
 
@@ -43,9 +44,11 @@ app.set('views', __dirname+'/views');
 app.use(session(mongoStoreOptions));
 
 app.use('/api/products', productsRouter);
-app.use('/api/carts', viewsRouter);
+app.use('/api/carts', cartsRouter);
+app.use('/chat', chatRouter);
 app.use("/users", userRouter);
 app.use('/views', viewsRouter);
+
 
 const PORT = 8080;
 app.listen(PORT, () => {
