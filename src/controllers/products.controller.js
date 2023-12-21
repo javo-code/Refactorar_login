@@ -10,26 +10,20 @@ export const createFileCtr = async (req, res, next) => {
   }
 };
 
-export const getAllProducts = async (req, res, next) => {
+export const getAll = async (req, res, next) => {
   try {
-    const { page, limit } = req.query;
-    const response = await service.getAll( page, limit );
-    //res.status(200).json(response);
-    const nextPage = response.hasNextPage ? `http://localhost:8080/api/products/all?page=${response.nextPage}` : null;
-    const prevPage = response.hasPrevPage ? `http://localhost:8080/api/products/all?page=${response.prevPage}` : null;
-    const status = response ? "success" : "error";
-    res.json({
-      payload: response.docs,
-      info: {
-        status ,
-        totalPages: response.totalPages,
-        page: response.page,
-        hasNextPage: response.hasNextPage,
-        hasPrevPage: response.hasPrevPage,
-        nextPage,
-        prevPage
-      }
-    }) 
+    const { page, limit, category, sortOrder } = req.query;
+    const response = await service.getAll(page, limit, category, sortOrder);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error.message);
+  }
+};
+
+export const getAllProds= async (req, res, next) => {
+  try {
+    const response = await service.getAllProds();
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }

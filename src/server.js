@@ -1,21 +1,54 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import { __dirname } from './utils.js';
-import MongoStore from "connect-mongo";
-import userRouter from "./routes/user.router.js";
-import viewsRouter from './routes/views.router.js'
 import "./db/connection.js";
-import { connectionString } from "./db/connection.js";
+
+import { __dirname } from './utils.js';
+
+//-------------------------📌VIEWS IMPORTS
+
 import handlebars from 'express-handlebars';
+import userRouter from "./routes/users.router.js";
+import viewsRouter from './routes/views.router.js'
 
+
+//-------------------------📌APIS IMPORTS
+import cookiesRouter from "./routes/cookies.router.js";
 import productsRouter from './routes/products.router.js';
-import cartsRouter from './routes/carts.router.js';
-import chatRouter from './routes/chat.router.js';
 
+
+
+//-------------------------📌FILESTORE IMPORTS
+/* 
+import sessionFileStore from "session-file-store";
+ */
+//-------------------------📌MONGOSTORE
+
+import MongoStore from "connect-mongo";
+import { connectionString } from "./db/connection.js";
 
 
 const app = express();
+
+//-------------------------📌FILESTORE SESSION OPTIONS
+/* 
+const FileStore = sessionFileStore(session)
+
+const fileStoreOptions = {
+  store: new FileStore({
+    path: './sessions',
+    ttl: 120,
+    reapInterval: 60
+  }),
+  secret: '1234',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 120000
+  }
+}
+ */
+//-------------------------📌FILESTORE SESSION OPTIONS
 
 const mongoStoreOptions = {
   store: MongoStore.create({
@@ -23,7 +56,7 @@ const mongoStoreOptions = {
     ttl: 120,
     crypto: {
       secret: '1234'
-    }
+    } 
   }),
   secret: "1234",
   resave: false,
@@ -33,26 +66,36 @@ const mongoStoreOptions = {
   },
 };
 
+//-------------------------📌GENERAL SETTINGS
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser());
+app.use(express.static(__dirname + "/public"));
 
 app.engine('handlebars', handlebars.engine()); 
 app.set('view engine', 'handlebars');  
 app.set('views', __dirname+'/views');  
 
+//-------------------------📌SESSION OPTION
+
+//app.use(session(fileStoreOptions));
 app.use(session(mongoStoreOptions));
 
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
-app.use('/chat', chatRouter);
+
+//-------------------------📌 VIEWS
+
 app.use("/users", userRouter);
-app.use('/views', viewsRouter);
+app.use('/', viewsRouter);
+
+//-------------------------📌APIS ROUTES
+app.use("/api/cookies", cookiesRouter);
+app.use('/api/products', productsRouter);
 
 
 const PORT = 8080;
 app.listen(PORT, () => {
-  console.log(`Servidor express escuchando en el puerto ${PORT}`);
+  console.log(`Server OK on port:: ${PORT}`);
 });
 
 export default app;

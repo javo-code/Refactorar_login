@@ -19,13 +19,22 @@ export const createFileProd = async () => {
   }
 };
 
-export const getAll = async (page, limit) => {
+export const getAll = async (page, limit, category, sortOrder) => {
   try {
-    return await prodDao.getAll(page, limit);
+    return await prodDao.getAll(page, limit, category, sortOrder);
   } catch (error) {
     console.log(error);
   }
 };
+
+export const getAllProds = async () => {
+  try {
+    return await prodDao.getAllProds();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 export const getById = async (id) => {
   try {

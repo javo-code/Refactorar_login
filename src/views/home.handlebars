@@ -1,0 +1,24 @@
+<div class="container-home">
+    <h1 class="title">NUEVA MEDICINA - INTERNACION DOMICILIARIA</h1>
+    <div>
+        {{#if session.welcomeMessage}}
+        <h1>{{session.welcomeMessage}}</h1>
+        {{/if}}
+    </div>
+    <div id="home">
+        {{#each products}}
+        <div class="card" style="width: 15rem;">
+            <img src="{{imageUrl}}" class="mx-auto img-thumbnail img" alt="{{title}}">
+            <div class="card_info card-body">
+                <h3 class="card-text">{{title}}</h3>
+                <p class="card-text"><strong>Precio: </strong> ${{price}}</p>
+                <p class="card-text"><strong>Stock: </strong>{{stock}}</p>
+                <p class="card-text"><strong>Categoria: </strong>{{category}}</p>
+            </div>
+            <div>
+                <button class="btn cart px-auto add-to-cart-btn" addProductID="{{_id}}">Añadir producto</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

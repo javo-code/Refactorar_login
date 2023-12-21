@@ -1,25 +1,24 @@
 import { Router } from "express";
-
 const router = Router();
+import ProductMongoDB from "../daos/mongoDB/products.dao.js";
+const prodDao = new ProductMongoDB();
+import { login, register, errorLogin, errorRegister, profile } from "../controllers/views.controller.js";
 
-router.get('/login', (req, res)=>{
-    res.render('login')
-})
+router.get("/", async (req, res) => {
+  try {
+    const response = await prodDao.getAll();
+    const products = response.payload.products;
+    // console.log(products);
+    res.render("home", { products });
+  } catch (error) {
+    console.error("Error getting products at views.router ::", error.message);
+    res.status(500).send("Internal server error");
+  }
+});
+router.get('/login', login);
+router.get('/register', register);
+router.get('/error-login', errorLogin);
+router.get('/error-register', errorRegister);
+router.get('/profile', profile);
 
-router.get('/register', (req, res)=>{
-    res.render('register')
-})
-
-router.get('/profile', (req, res)=>{
-    res.render('profile')
-})
-
-router.get('/admin-profile', (req, res)=>{
-    res.render('admin-profile')
-})
-
-router.get('/register-error', (req, res)=>{
-    res.render('register-error')
-})
-
-export default router; 
+export default router;

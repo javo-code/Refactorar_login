@@ -1,9 +1,25 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export const getRandomNumber = () => {
-  const random = Math.floor(Math.random() * 50);
-  return random;
+/* ------------------------------------ - ----------------------------------- */
+
+import { hashSync, genSaltSync, compareSync } from "bcrypt";
+
+//registro
+export const createHash = (password) => {
+  return hashSync(password, genSaltSync(10));
+};
+
+//login
+
+/**
+ * 
+ * @param {*} password contraseña proporcionada por el usuario, sin hashear
+ * @param {*} user usuario existente en base de datos
+ * @returns boolean
+ */
+
+export const isValidPass = (password, user) => {
+  return compareSync(password, user.password);
 };
