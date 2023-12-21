@@ -6,15 +6,15 @@ export default class UserController {
     console.log(req.body);
     try {
       const user = await userService.register(req.body);
-      if (user) res.redirect("/views/login");
-      else res.redirect("/views/register-error");
+      if (user) res.redirect("/login");
+      else res.redirect("/register-error");
     } catch (error) {
       next(error);
     }
   }
 
   
-  async login(req, res, next) {
+async login(req, res, next) {
   try {
     const { email, password } = req.body;
     const user = await userService.login(email, password);
@@ -23,15 +23,32 @@ export default class UserController {
       req.session.email = email;
       req.session.password = password;
 
-      user.role === 'admin' ?
-        res.redirect('/views/admin-profile') :
-        res.redirect('/views/profile')
-      
+      if (user.role === 'user') {
+        res.redirect('/users/profile');
+      } else if (user.role === 'admin') {
+        res.redirect('/users/admin-profile');
+      }
     } else {
-      res.redirect('/views/register-error');
+      res.redirect('/register-error');
+
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
-}
+
+async logout(req, res, next) {
+    try {
+      req.session.destroy((err) => {
+        if (err) {
+          console.error('Error clossing session:', err);
+          res.status(500).send('Error clossing session a users.controller');
+        } else {
+          res.redirect('/login');
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

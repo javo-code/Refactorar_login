@@ -1,1 +1,39 @@
-<h1>PROFILE</h1>
+<div class="container-profile">
+    <h1 class="title">USER PROFILE</h1>
+    <div id="profile">
+        <h2>Bienvenid@ {{first_name}}</h2>
+        <button type="button" onclick="logout()">Cerrar Sesión</button>
+        {{#each products}}
+        <div class="card" style="width: 25rem;">
+            <img src="{{imageUrl}}" class="mx-auto img-thumbnail img" alt="{{title}}">
+            <div class="card_info card-body">
+                <h3 class="card-text">{{title}}</h3>
+                <p class="card-text"><strong>Precio: </strong> ${{price}}</p>
+                <p class="card-text"><strong>Stock: </strong>{{stock}}</p>
+                <p class="card-text"><strong>Categoria: </strong>{{category}}</p>
+            </div>
+            <div>
+                <button class="btn cart px-auto add-to-cart-btn" addProductID="{{_id}}">Añadir producto</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    // Función para hacer la solicitud de cerrar sesión al servidor
+    function logout() {
+        fetch('/logout', {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redireccionar a la página de inicio de sesión u otra página
+                }
+            })
+            .catch(error => {
+                console.error('Error al cerrar sesión:', error);
+                // Manejar el error si es necesario
+            });
+    }
+</script>

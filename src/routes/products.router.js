@@ -6,8 +6,11 @@ import { productValidator } from "../middlewares/productValidator.js"
 import * as controller from "../controllers/products.controller.js";
 
 
-//MOSTRAR TODOS LOS PRODUCTOS - LIMIT / PAGINATE
-router.get("/all", controller.getAllProducts);
+//MOSTRAR TODOS LOS PRODUCTOS + LIMIT / PAGINATE
+router.get("/all", controller.getAll);
+
+//MOSTRAR TODOS LOS PRODUCTOS
+router.get("/", controller.getAllProds);
 
 //CREAR PRODUCTO.
 router.post("/", productValidator, controller.createProduct);
