@@ -19,6 +19,19 @@ router.get('/login', login);
 router.get('/register', register);
 router.get('/error-login', errorLogin);
 router.get('/error-register', errorRegister);
-router.get('/profile', profile);
+router.get('/profile', async (req, res) => {
+  try {
+    const response = await prodDao.getAll();
+    const products = response.payload.products;
+    // console.log(products);
+    res.render("profile", { products });
+  } catch (error) {
+    console.error(
+      "Error getting products at profile views.router ::",
+      error.message
+    );
+    res.status(500).send("Internal server error");
+  }
+});
 
 export default router;
