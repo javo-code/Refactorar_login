@@ -48,7 +48,16 @@ router.get('/register-error', (req, res) => {
 
 router.get("/register-github", passport.authenticate("github", { scope: ["user:email"] }));
 
-router.get("/register-github", passport.authenticate("github", { scope: ["user:email"] }, (req, res) => res.send("Hola wey")));
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error closing session:', err);
+            return res.status(500).send('Error closing session');
+        }
+        // Redirige a la página de inicio de sesión después de cerrar sesión exitosamente
+        res.redirect('/login');
+    });
+});
 
 
 export default router;
