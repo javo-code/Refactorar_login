@@ -2,7 +2,7 @@ import { Router } from "express";
 const router = Router();
 import ProductMongoDB from "../daos/mongoDB/products.dao.js";
 const prodDao = new ProductMongoDB();
-import { login, register, errorLogin, errorRegister, profile } from "../controllers/views.controller.js";
+import { login, register, errorLogin, errorRegister } from "../controllers/views.controller.js";
 
 router.get("/", async (req, res) => {
   try {

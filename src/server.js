@@ -2,7 +2,6 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import "./db/connection.js";
-
 import { __dirname } from './utils.js';
 
 //-------------------------📌VIEWS IMPORTS
@@ -26,7 +25,8 @@ import sessionFileStore from "session-file-store";
 
 import MongoStore from "connect-mongo";
 import { connectionString } from "./db/connection.js";
-
+import passport from "passport";
+import "./passport/strategy-github.js"
 
 const app = express();
 
@@ -69,7 +69,7 @@ const mongoStoreOptions = {
 //-------------------------📌GENERAL SETTINGS
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(__dirname + "/public"));
 
@@ -82,6 +82,9 @@ app.set('views', __dirname+'/views');
 //app.use(session(fileStoreOptions));
 app.use(session(mongoStoreOptions));
 
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //-------------------------📌 VIEWS
 

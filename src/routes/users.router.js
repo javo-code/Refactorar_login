@@ -2,6 +2,7 @@ import { Router } from "express";
 import UserController from "../controllers/users.controller.js";
 const controller = new UserController();
 import ProductMongoDB from "../daos/mongoDB/products.dao.js";
+import passport from "passport";
 const prodDao = new ProductMongoDB();
 
 
@@ -41,8 +42,13 @@ router.get('/admin-profile', async (req, res) => {
   }
 });
 
-router.get('/register-error', (req, res)=>{
-    res.render('register-error')
-})
+router.get('/register-error', (req, res) => {
+  res.render('register-error')
+});
+
+router.get("/register-github", passport.authenticate("github", { scope: ["user:email"] }));
+
+router.get("/register-github", passport.authenticate("github", { scope: ["user:email"] }, (req, res) => res.send("Hola wey")));
+
 
 export default router;
