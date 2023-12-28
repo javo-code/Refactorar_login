@@ -2,8 +2,11 @@
     <h1 class="title">USER PROFILE</h1>
     <div id="profile">
         <h2>Bienvenid@ {{user.first_name}}</h2>
-        <button type="button"><a href="/users/logout">Cerrar Sesión</a></button>
-        
+        <div class="container-profile">
+            <form action="/users/logout" method="GET">
+                <button type="submit">Cerrar Sesión</button>
+            </form>
+        </div>
         {{#each products}}
         <div class="card" style="width: 25rem;">
             <img src="{{imageUrl}}" class="mx-auto img-thumbnail img" alt="{{title}}">
@@ -20,5 +23,3 @@
         {{/each}}
     </div>
 </div>
-
-<script src="../controllers/users.controller.js"></script>

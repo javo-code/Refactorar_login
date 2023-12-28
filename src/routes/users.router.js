@@ -49,14 +49,22 @@ router.get('/register-error', (req, res) => {
 router.get("/register-github", passport.authenticate("github", { scope: ["user:email"] }));
 
 router.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error closing session:', err);
-            return res.status(500).send('Error closing session');
-        }
-        // Redirige a la página de inicio de sesión después de cerrar sesión exitosamente
-        res.redirect('/login');
-    });
+    try {
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Error closing session:', err);
+                throw new Error('No se pudo destruir la sesión');
+            }
+            // Mensaje de confirmación de sesión destruida
+            console.log('Sesión de usuario destruida con éxito.');
+
+            // Redireccionar a la página de inicio de sesión después de cerrar sesión exitosamente
+            res.redirect('/login');
+        });
+    } catch (error) {
+        console.error('Error al destruir la sesión:', error);
+        return res.status(500).send('Error al cerrar sesión');
+    }
 });
 
 
