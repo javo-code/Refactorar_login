@@ -7,7 +7,6 @@ const userSchema = new Schema({
   },
   last_name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -16,16 +15,21 @@ const userSchema = new Schema({
   },
   age: {
     type: Number,
-    required: true,
   },
   password: {
     type: String,
     required: true,
+    default: ''
   },
   role: {
     type: String,
     default: "user",
   },
+
+  isGithub: {
+    type: Boolean,
+    default: false
+  }
 });
 
 export const UserModel = model("users", userSchema);

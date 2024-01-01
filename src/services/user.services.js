@@ -35,9 +35,9 @@ export default class UserServices {
       const { email, password } = user;
       const userExist = await UserModel.findOne({ email });
       if (userExist) {
-        const isValid = isValidPass(password, userExist);
-        console.log('isValid? =>', isValid);
-        if (!isValid) return false;
+        const isValidPassword = isValidPass(userExist, password);
+        console.log('isValid? =>', isValidPass);
+        if (!isValidPassword) return false;
         else return userExist;
       } return false;
     } catch (error) {

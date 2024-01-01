@@ -15,6 +15,14 @@ router.get("/", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+//-------------------------📌CHAT
+
+router.get('/chat', (req, res) => {
+    res.render('chat')
+});
+
+//-------------------------📌LOGIN
 router.get('/login', login);
 router.get('/register', register);
 router.get('/error-login', errorLogin);
