@@ -4,6 +4,7 @@ const controller = new UserController();
 import ProductMongoDB from "../daos/mongoDB/products.dao.js";
 import passport from "passport";
 const prodDao = new ProductMongoDB();
+import { ensureAuthenticated } from "../passport/github.strategy.js"
 
 const router = Router();
 
@@ -25,12 +26,29 @@ router.get('/profile', async (req, res) => {
     console.error(
       "Error getting products at profile views.router ::",
       error.message
-    );
-    res.status(500).send("Internal server error");
-  }
-});
+      );
+      res.status(500).send("Internal server error");
+    }
+  });
 
-router.get('/github-profile', async (req, res) => {
+
+  
+  //cuando el usuario presione el boton "INICIAR SESISON CON GITHUB, se disparara este endpoint"
+  router.get("/register-github",
+    passport.authenticate("github", { scope: ["user:email"] })
+  );
+  
+  router.get("/github", async (req, res) => {
+      try {
+        passport.authenticate("github", { scope: ["user:email"] }), (req, res) => res.send('hola');
+      } catch (error) {
+          console.error('Error al usar la ruta github la sesión:', error);
+        
+      }
+    }  
+  );
+
+  router.get('/github-profile', ensureAuthenticated, async (req, res) => {
   try {
     const response = await prodDao.getAll();
     const products = response.payload.products;
@@ -40,19 +58,21 @@ router.get('/github-profile', async (req, res) => {
     console.error(
       "Error getting products at profile views.router ::",
       error.message
-    );
-    res.status(500).send("Internal server error");
-  }
-});
+      );
+      res.status(500).send("Internal server error");
+    }
+  });
+  
 
 
 
-router.get('/admin-profile', async (req, res) => {
-  try {
-    const response = await prodDao.getAll();
-    const products = response.payload.products;
-    // console.log(products);
-    res.render("admin-profile", { products });
+
+  router.get('/admin-profile', async (req, res) => {
+    try {
+      const response = await prodDao.getAll();
+      const products = response.payload.products;
+      // console.log(products);
+      res.render("admin-profile", { products });
   } catch (error) {
     console.error(
       "Error getting products at profile views.router ::",
@@ -65,20 +85,6 @@ router.get('/admin-profile', async (req, res) => {
 router.get('/register-error', (req, res) => {
   res.render('register-error')
 });
-
-router.get("/register-github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
-
-router.get("/github", async (req, res) => {
-    try {
-      passport.authenticate("github", { scope: ["user:email"] }), controller.githubResponse
-    } catch (error) {
-        console.error('Error al usar la ruta github la sesión:', error);
-      
-    }
-  }  
-);
 
 router.get('/logout', (req, res) => {
     try {
