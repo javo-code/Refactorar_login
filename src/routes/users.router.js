@@ -5,6 +5,7 @@ import ProductMongoDB from "../daos/mongoDB/products.dao.js";
 import passport from "passport";
 const prodDao = new ProductMongoDB();
 import { ensureAuthenticated } from "../passport/github.strategy.js"
+import { checkToken } from "../middlewares/checkToken.js";
 
 const router = Router();
 
@@ -32,7 +33,8 @@ router.get('/profile', async (req, res) => {
   });
 
 
-  
+//-------------------------📌GIUTHUB LOGIN
+
   //cuando el usuario presione el boton "INICIAR SESISON CON GITHUB, se disparara este endpoint"
   router.get("/register-github",
     passport.authenticate("github", { scope: ["user:email"] })
@@ -102,5 +104,18 @@ router.get('/logout', (req, res) => {
     }
 });
 
+
+router.get("/private", checkToken, (req, res) => {
+  const { first_name, last_name, email, role } = req.user;
+  res.json({
+    status: "success",
+    userData: {
+      first_name,
+      last_name,
+      email,
+      role,
+    },
+  });
+});
 
 export default router;
