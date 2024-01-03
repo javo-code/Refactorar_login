@@ -9,6 +9,8 @@ import { checkToken } from "../middlewares/checkToken.js";
 
 const router = Router();
 
+//-------------------------📌LOCAL STRATEGY
+
 router.post("/register-local", passport.authenticate('register-local'), controller.registerResponse);
 
 router.post("/login-local", passport.authenticate('login-local'), controller.loginResponse);
@@ -16,6 +18,13 @@ router.post("/login-local", passport.authenticate('login-local'), controller.log
 router.post("/register", controller.register);
 
 router.post("/login", controller.login);
+
+
+//-------------------------📌JWT STRATEGY
+
+router.post("/registerJWT", controller.registerJWT);
+
+router.post("/loginJWT", controller.loginJWT);
 
 router.get('/profile', async (req, res) => {
   try {
@@ -33,7 +42,7 @@ router.get('/profile', async (req, res) => {
   });
 
 
-//-------------------------📌GIUTHUB LOGIN
+//-------------------------📌GITHUB STRATEGY
 
   //cuando el usuario presione el boton "INICIAR SESISON CON GITHUB, se disparara este endpoint"
   router.get("/register-github",

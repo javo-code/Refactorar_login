@@ -8,7 +8,7 @@ export const generateToken = (user) => {
   userId: user._id,
   };
 
-  const token = jwt.sign(payload, PRIVATE_KEY, { //sign encripta la informacoin que le pasamos y define la vida del token 
+  const token = jwt.sign(payload, PRIVATE_KEY, { //sign encripta la informacoin que le pasamos y podemos ver la vida del token 
     expiresIn: "20m", //minutos= 20m, horas= 2h, segundos= 120s
   });
 

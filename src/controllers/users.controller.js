@@ -1,5 +1,7 @@
 import UserDao from "../daos/mongoDB/users.dao.js";
 const userDao = new UserDao();
+import UserServices from "../services/user.services.js";
+const userService = new UserServices();
 import { generateToken } from "../jwt/auth.js";
 
 export default class UserController {
@@ -31,7 +33,7 @@ async loginResponse(req, res, next) {
     }
   }
   
-/*   async githubResponse(req, res, next) {
+async githubResponse(req, res, next) {
     try {
       const user = await UserDao.getById(req.session.passport.user);
       console.log(req.user);
@@ -73,9 +75,9 @@ async login(req, res, next) {
     } catch (error) {
       next(error);  
     }
-  } */
+  }
 
-    async register(req, res, next) {
+    async registerJWT(req, res, next) {
     try {
       const { first_name, last_name, email, age, password } = req.body;
       const exists = await userDao.getByEmail(email);
@@ -90,7 +92,7 @@ async login(req, res, next) {
     }
   }
 
-  async login(req, res, next) {
+  async loginJWT(req, res, next) {
     try {
       const { email, password } = req.body;
       const user = await userDao.loginUser({ email, password });
