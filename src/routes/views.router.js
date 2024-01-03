@@ -42,4 +42,11 @@ router.get('/profile', async (req, res) => {
   }
 });
 
+//-------------------------📌JWT
+
+router.get('/jwt', (req, res) => {
+  res.render("jwt")
+});
+
+
 export default router;

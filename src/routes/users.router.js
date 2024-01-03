@@ -9,7 +9,7 @@ import { checkToken } from "../middlewares/checkToken.js";
 
 const router = Router();
 
-//-------------------------📌LOCAL STRATEGY
+//-------------------------📌LOCAL STRATEGY ROUTES
 
 router.post("/register-local", passport.authenticate('register-local'), controller.registerResponse);
 
@@ -20,7 +20,7 @@ router.post("/register", controller.register);
 router.post("/login", controller.login);
 
 
-//-------------------------📌JWT STRATEGY
+//-------------------------📌JWT STRATEGY ROUTES
 
 router.post("/registerJWT", controller.registerJWT);
 
@@ -41,8 +41,7 @@ router.get('/profile', async (req, res) => {
     }
   });
 
-
-//-------------------------📌GITHUB STRATEGY
+//-------------------------📌GITHUB STRATEGY ROUTES
 
   //cuando el usuario presione el boton "INICIAR SESISON CON GITHUB, se disparara este endpoint"
   router.get("/register-github",
@@ -75,8 +74,7 @@ router.get('/profile', async (req, res) => {
   });
   
 
-
-
+//-------------------------📌ADMIN PROFILE ROUTES
 
   router.get('/admin-profile', async (req, res) => {
     try {
@@ -97,6 +95,8 @@ router.get('/register-error', (req, res) => {
   res.render('register-error')
 });
 
+//-------------------------📌LOGOUT
+
 router.get('/logout', (req, res) => {
     try {
         req.session.destroy((err) => {
@@ -113,6 +113,7 @@ router.get('/logout', (req, res) => {
     }
 });
 
+//-------------------------📌PRIVATE ROUTE
 
 router.get("/private", checkToken, (req, res) => {
   const { first_name, last_name, email, role } = req.user;
@@ -126,5 +127,7 @@ router.get("/private", checkToken, (req, res) => {
     },
   });
 });
+
+router.post("/loginJWTFront", controller.loginJWTFront);
 
 export default router;

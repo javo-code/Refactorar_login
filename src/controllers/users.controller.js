@@ -8,7 +8,7 @@ export default class UserController {
   async registerResponse(req, res, next) {
     try {
       res.json({
-        msg: "register ok!",
+        msg: "👹register ok!",
         session: req.session
       });
     } catch (error) {
@@ -23,7 +23,7 @@ async loginResponse(req, res, next) {
       const user = await userDao.getById(id);
       const { first_name, last_name } = user;
       res.json({
-        msg: "login ok!",
+        msg: "👹login ok!",
         user: {
           first_name, last_name
         }
@@ -39,7 +39,7 @@ async githubResponse(req, res, next) {
       console.log(req.user);
       const { first_name, email } = req.user;
       res.json({
-        msg: "Register / Login with GITHUB ok!",
+        msg: "👹Register / Login with GITHUB ok!",
         user: {
           first_name,
           email,
@@ -52,7 +52,7 @@ async githubResponse(req, res, next) {
   }
 
   async register(req, res, next) {
-    console.log("clg desde el REGISTER del user.cotroller", req.body);
+    console.log("👹clg desde el REGISTER del user.cotroller", req.body);
     try {
       const user = await userService.register(req.body);
       if (user) res.redirect("/login");
@@ -85,10 +85,10 @@ async login(req, res, next) {
       const user = { first_name, last_name, email, age, password };
       const newUser = await userDao.createUser(user);
       res.json({
-        msg: "Register OK"
+        msg: "👹Register OK"
       })
     } catch (error) {
-      next("Error desde el registerJWT en el users.controller.js:", error);
+      next("👹Error desde el registerJWT en el users.controller.js:", error);
     }
   }
 
@@ -96,13 +96,25 @@ async login(req, res, next) {
     try {
       const { email, password } = req.body;
       const user = await userDao.loginUser({ email, password });
-      if (!user) res.json({ msg: "Invalid credeentials - loginJWT" });
+      if (!user) res.json({ msg: "👹Invalid credeentials - loginJWT" });
       const accessToken = generateToken(user);
       res
         .header("Authorization", accessToken) //seteamos el header con el id del user generado por mongo
-        .json({ msg: "Login OK", accessToken });
+        .json({ msg: "👹Login OK", accessToken });
     } catch (error) {
       
+    }
+  }
+
+  async loginJWTFront(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      const user = await userDao.loginUser({ email, password });
+      if (!user) res.json({ msg: "👹invalid credentials at loginJWTFront" });
+      const accessToken = generateToken(user);
+      res.json(accessToken);
+    } catch (error) {
+      console.log("👹Error en la ruta loginJWT=>", error)
     }
   }
 }
