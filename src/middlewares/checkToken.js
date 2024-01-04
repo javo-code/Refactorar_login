@@ -12,7 +12,7 @@ export const checkToken = async (req, res, next) => {
     const token = authHeader.split(" ")[1];
     // esto es lo que obetenemos desp del split() = 'gdfgdfgdg16dfg65df4g564dfg¿??=¿?=¿?'
     const decode = jwt.verify(token, PRIVATE_KEY);
-    console.log("👹decode::", decode); //payload ---> {userId: id de mongo},este es el objeto que viene desde la fn "generateToken" en auth.js 
+    console.log("👹Token Decodificado => ", decode); //payload ---> {userId: id de mongo},este es el objeto que viene desde la fn "generateToken" en auth.js 
     const user = await userDao.getById(decode.userId);
     if (!user) return res.status(401).json({ msg: "Unauthorized" });
     req.user = user;

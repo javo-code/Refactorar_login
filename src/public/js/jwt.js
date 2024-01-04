@@ -17,5 +17,20 @@ form.onsubmit = (e) => {
     }).then((response) => response.json())
         .then((response) => {
             console.log("👹clg at jwt.js - response=> ", response);
+            localStorage.setItem("token", response);
+        })
+};
+
+buton.onclick = () => {
+    fetch("http://localhost:8080/users/private", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    }).then((response) => response.json())
+        .then((response) => {
+            console.log("👹clg at jwt.js - response buton=> ", response);
+            
         })
 };

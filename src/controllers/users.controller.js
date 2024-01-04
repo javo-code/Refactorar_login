@@ -112,7 +112,9 @@ async login(req, res, next) {
       const user = await userDao.loginUser({ email, password });
       if (!user) res.json({ msg: "👹invalid credentials at loginJWTFront" });
       const accessToken = generateToken(user);
-      res.json(accessToken);
+      res
+        .cookie("token", accessToken)
+        .json(accessToken);
     } catch (error) {
       console.log("👹Error en la ruta loginJWT=>", error)
     }
