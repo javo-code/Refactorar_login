@@ -113,7 +113,7 @@ async login(req, res, next) {
       if (!user) res.json({ msg: "👹invalid credentials at loginJWTFront" });
       const accessToken = generateToken(user);
       res
-        .cookie("token", accessToken)
+        .cookie("token", accessToken, { httpOnly: true })
         .json(accessToken);
     } catch (error) {
       console.log("👹Error en la ruta loginJWT=>", error)
