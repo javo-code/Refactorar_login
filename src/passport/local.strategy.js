@@ -45,6 +45,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   const user = await userDao.getById(id);
-  console.log('clg del deserialize desde el local-strategy.js ', user);
+  console.log('👹clg del deserialize desde el local-strategy.js ', user);
   return done(null, user);
 });

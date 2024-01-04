@@ -1,7 +1,14 @@
 <div class="container-profile">
     <h1 class="title">USER PROFILE</h1>
     <div id="profile">
-        <h2>Bienvenid@ {{user.first_name}}</h2>
+        
+        <h2>Bienvenid@ {{user.name}}</h2>
+        {{#if user.email}}
+        <p>Email: {{user.email}}</p>
+        
+        {{else}}
+        <h2>No se encontró el usuario</h2>
+        {{/if}}
         <div class="container-profile">
             <form action="/users/logout" method="GET">
                 <button type="submit">Cerrar Sesión</button>

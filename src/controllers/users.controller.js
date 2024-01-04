@@ -67,9 +67,11 @@ async login(req, res, next) {
     try {
         const { email } = req.body;
       const user = await userService.login(req.body);
+      console.log(user);
       if(user) {
-        console.log("clg desde el LOGIN del user.cotroller", req.session);
+        console.log("👹clg desde el LOGIN del user.cotroller", req.session);
         req.session.email = email;
+        console.log(req.session.email);
         res.redirect('/profile');
         } else res.redirect('/error-login')
     } catch (error) {

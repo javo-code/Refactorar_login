@@ -30,16 +30,36 @@ router.get('/profile', async (req, res) => {
   try {
     const response = await prodDao.getAll();
     const products = response.payload.products;
-    // console.log(products);
-    res.render("profile", { products });
-  } catch (error) {
-    console.error(
-      "Error getting products at profile views.router ::",
-      error.message
-      );
-      res.status(500).send("Internal server error");
+
+    if (req.session.email) {
+      // Aquí obtienes los datos del usuario desde MongoDB usando el email almacenado en la sesión
+      const user = await userService.getUserByEmail(req.session.email);
+
+      // Verifica si se encontró el usuario en la base de datos
+      if (user) {
+        // Pasa los datos del usuario y los productos a la plantilla Handlebars
+        res.render("profile", { 
+          products,
+          user: {
+            name: user.name,
+            email: user.email,
+            // Otros datos del usuario, si es necesario
+          }
+        });
+      } else {
+        // Si no se encuentra el usuario en la base de datos, redirige o maneja el caso en consecuencia
+        res.redirect('/error-login');
+      }
+    } else {
+      // Si no hay email en la sesión, redirige al usuario a la página de error o maneja el caso en consecuencia
+      res.redirect('/error-login');
     }
-  });
+  } catch (error) {
+    console.error("Error getting products at profile views.router ::", error.message);
+    res.status(500).send("Internal server error");
+  }
+});
+
 
 //-------------------------📌GITHUB STRATEGY ROUTES
 
