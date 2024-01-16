@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     const response = await prodDao.getAll();
     const products = response.payload.products;
     // console.log(products);
-    res.render("home", { products });
+    res.render('login')
   } catch (error) {
     console.error("Error getting products at views.router ::", error.message);
     res.status(500).send("Internal server error");
@@ -32,7 +32,7 @@ router.get('/profile', async (req, res) => {
     const response = await prodDao.getAll();
     const products = response.payload.products;
     // console.log(products);
-    res.render("profile", { products });
+    res.render("home", { products });
   } catch (error) {
     console.error(
       "Error getting products at profile views.router ::",

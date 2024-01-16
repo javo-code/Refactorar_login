@@ -1,11 +1,31 @@
 import { Strategy as GithubStrategy } from "passport-github2";
 import passport from "passport";
+import UserServices from "../services/user.services.js";
 
 const githubStrategyOptions = {
     clientID: "Iv1.5060d94014fb270e",
     clientSecret: "3aa39e156b3891f0a646833a11c312f4ce28ab34",
     callbackURL: "http://localhost:8080/users/github-profile",
 };
+
+const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
+    try {
+        console.log("👹Profile from GitHub:", profile);
+        const email = profile._json.email;
+        const user = await UserDao.getByEmail(email);
+        if (user) return done(null, user);
+        const newUser = await UserServices.register({
+            first_name: profile._json.name,
+            email: profile._json.email,
+            isGithub: true
+        })
+        return done(null, newUser)
+    } catch (error) {
+        return done("👹Error en el registerOrLogin del github-strategy.js", error);
+    }
+};
+/* 
+//-------------------------📌FUNCION ORIGINAL
 
 const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
     try {
@@ -19,7 +39,7 @@ const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
         return done(error);
     }
 };
-
+ */
 passport.use(
     "github",
     new GithubStrategy(githubStrategyOptions, registerOrLogin)

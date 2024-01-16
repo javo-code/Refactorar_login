@@ -9,26 +9,27 @@ export default class UserServices {
   async register(user) {
     try {
       const { email, password } = user;
-
-      if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-        const adminUser = await UserModel.create({ ...user, role: 'admin' });
-        return adminUser;
-      }
-
-      const exists = await this.findByEmail(email);
-      if (!exists) {
-        const newUser = await UserModel.create({
-          ...user,
-          password: createHash(password)
+      const existUser = await this.getByEmail(email);
+      if(!existUser){
+        if(email === 'adminCoder@coder.com' && password === 'adminCod3r123'){
+          return await UserModel.create({
+            ...user,
+            // password: createHash(password),
+            password,
+            role: 'admin'
         });
-        return newUser;
-      } else {
-        return false;
+        } 
+          return await UserModel.create({
+              ...user,
+              // password: createHash(password),
+              password
+          });
+        } else return false;
+      } catch (error) {
+        console.log(error)
+        throw new Error(error)
       }
-    } catch (error) {
-      console.log(error);
     }
-  }
 
   async login(user) {
     try {

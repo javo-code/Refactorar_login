@@ -39,7 +39,7 @@ async githubResponse(req, res, next) {
       console.log(req.user);
       const { first_name, email } = req.user;
       res.json({
-        msg: "👹Register / Login with GITHUB ok!",
+        msg: "✔ Register / Login with GITHUB ok!",
         user: {
           first_name,
           email,
